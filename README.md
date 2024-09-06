@@ -18,5 +18,13 @@ O Frontend da API RESTful de Animes é uma aplicação web desenvolvida em React
 - **Styled Components**: Para estilização dos componentes.
 - **React Router**: Para o roteamento entre as páginas da aplicação.
 
+A aplicação estará disponível em http://localhost:3000.
+
+## Notas
+A aplicação está configurada para se conectar ao backend da API RESTful de Animes. Certifique-se de que o backend esteja em execução e acessível.
+O código ainda está em desenvolvimento e há várias melhorias planejadas, incluindo otimização de desempenho e aprimoramento da interface.
+
+## Contribuições
+Sinta-se à vontade para contribuir com melhorias e correções. Crie um fork do repositório, faça suas alterações e envie um pull request.
 
 
