@@ -15,8 +15,7 @@ function CreateAnimePage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const newAnime: Anime = { 
-      id: '', // A API pode gerar IDs automaticamente
+    const newAnime = { 
       title, 
       description, 
       releaseDate, 
