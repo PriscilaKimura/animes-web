@@ -1,0 +1,15 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; 
+    background: linear-gradient(135deg, rgb(166, 167, 236), #f3d993); 
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+  }
+  
+  h1, h2, p {
+    color: #9b2929; 
+  }
+  
