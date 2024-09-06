@@ -1,7 +1,6 @@
 //Página com um formulário para criar um novo item
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Anime } from '../types/interface'; 
 
 function CreateAnimePage() {
   const [title, setTitle] = useState('');
