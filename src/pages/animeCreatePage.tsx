@@ -1,42 +1,24 @@
 //Página com um formulário para criar um novo item
-import { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAnimeForm from '../hooks/useFormAnime';
+import { Anime } from '../types/interface';
 
-function CreateAnimePage() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [releaseDate, setReleaseDate] = useState('');
-  const [completed, setCompleted] = useState(false);
-  const [type, setType] = useState<'filme' | 'série'>('filme'); 
-  const [ranking, setRanking] = useState<number | undefined>(undefined); // Novo estado para o ranking
-
+const CreateAnimePage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  // Inicializa o hook com um estado inicial nulo
+  const { title, setTitle, description, setDescription, releaseDate, setReleaseDate, completed, setCompleted, type, setType, ranking, setRanking, handleSubmit } = useAnimeForm(null);
 
-    const newAnime = { 
-      title, 
-      description, 
-      releaseDate, 
-      completed, 
-      type,
-      ranking, // Adicionado o ranking ao novo anime
-    };
-
+  // Função para enviar o anime
+  const submitAnime = async (anime: Partial<Anime>) => {
     try {
       const response = await fetch('http://localhost:8080/anime', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newAnime),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(anime),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create anime');
-      }
-
+      if (!response.ok) throw new Error('Failed to create anime');
       navigate('/');
     } catch (error) {
       console.error('Error creating anime:', error);
@@ -46,7 +28,7 @@ function CreateAnimePage() {
   return (
     <div>
       <h1>Criar Novo Anime</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => handleSubmit(event, submitAnime)}>
         <div>
           <label>Título:</label>
           <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -69,23 +51,15 @@ function CreateAnimePage() {
             <option value="filme">Filme</option>
             <option value="série">Série</option>
           </select>
-          </div>
+        </div>
         <div>
           <label>Ranking:</label>
-          <input 
-            type="number" 
-            value={ranking === undefined ? '' : ranking} 
-            onChange={(e) => setRanking(e.target.value ? parseInt(e.target.value) : undefined)} 
-            min="1" 
-            placeholder="Ranking (opcional)" 
-          />
+          <input type="number" value={ranking !== undefined ? ranking : ''} onChange={(e) => setRanking(Number(e.target.value))} />
         </div>
         <button type="submit">Criar Anime</button>
       </form>
     </div>
   );
-}
+};
 
 export default CreateAnimePage;
-
-
