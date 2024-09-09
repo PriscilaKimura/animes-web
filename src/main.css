@@ -1,15 +1,36 @@
-
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif; 
-    background: linear-gradient(135deg, rgb(166, 167, 236), #f3d993); 
-    background-size: cover;
-    background-position: center; 
-    background-repeat: no-repeat; 
-  }
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, rgb(166, 167, 236), #f3d993);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; 
+  background-attachment: fixed; 
+  min-height: 100vh; 
   
-  h1, h2, p {
-    color: #9b2929; 
-  }
-  
+}
+
+h1 {
+  font-family: 'Nerko One', cursive;
+  background: linear-gradient(135deg, #f1b0b2, #4a1d7e, #f5d8ec); 
+  -webkit-background-clip: text; 
+  background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+    text-align: center; 
+  margin: 50px 0; 
+}
+
+h2 {
+  font-family:'Playfair Display', serif;
+  color: #600988;
+  text-align: center; 
+  margin: 20px 0; 
+}
+
+p {
+  font-family:'Karla', sans-serif;
+  color: #9b2929; 
+  margin: 10px 0; 
+  text-align: center; 
+}

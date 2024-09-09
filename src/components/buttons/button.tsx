@@ -10,7 +10,7 @@ const StyledButton = styled(AntButton)`
   color: white; 
   border: none; 
   &:hover {
-    background-color: #40a9ff; 
+  background-color: #40a9ff; 
   }
 `;
 

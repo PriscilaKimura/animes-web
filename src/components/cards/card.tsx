@@ -28,7 +28,7 @@ interface CardProps {
         <p>{anime.completed ? 'Completo' : 'Em andamento'}</p>
         <p>Data de lançamento: {anime.releaseDate}</p>
         <p>Tipo: {anime.type === 'filme' ? 'Filme' : 'Série'}</p>
-        <p>Ranking: {anime.ranking}</p> {/* Adicionado o campo ranking */}
+        <p>Ranking: {anime.ranking}</p> 
         <Button to={`/update/${anime.id}`}>Editar</Button>
         <DeleteButton onClick={onDelete}>Excluir</DeleteButton>
       </div>

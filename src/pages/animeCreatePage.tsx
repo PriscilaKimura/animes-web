@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAnimeForm from '../hooks/useFormAnime';
 import { Anime } from '../types/interface';
+import Form from '../components/form/form';
 
 const CreateAnimePage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,47 +20,45 @@ const CreateAnimePage: React.FC = () => {
         body: JSON.stringify(anime),
       });
       if (!response.ok) throw new Error('Failed to create anime');
-      navigate('/');
-    } catch (error) {
-      console.error('Error creating anime:', error);
-    }
-  };
+
+   // Navega para a lista com o estado de criação
+      navigate('/', { state: { created: true } });
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+   
+  // Funções de mudança de estado
+  const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  const onDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value);
+  const onReleaseDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setReleaseDate(e.target.value);
+  const onCompletedChange = () => setCompleted(!completed);
+  const onTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value as 'filme' | 'série');
+  const onRankingChange = (e: React.ChangeEvent<HTMLInputElement>) => setRanking(Number(e.target.value));
 
   return (
     <div>
-      <h1>Criar Novo Anime</h1>
-      <form onSubmit={(event) => handleSubmit(event, submitAnime)}>
-        <div>
-          <label>Título:</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        </div>
-        <div>
-          <label>Descrição:</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
-        </div>
-        <div>
-          <label>Data de Lançamento:</label>
-          <input type="date" value={releaseDate} onChange={(e) => setReleaseDate(e.target.value)} required />
-        </div>
-        <div>
-          <label>Completo:</label>
-          <input type="checkbox" checked={completed} onChange={() => setCompleted(!completed)} />
-        </div>
-        <div>
-          <label>Tipo:</label>
-          <select value={type} onChange={(e) => setType(e.target.value as 'filme' | 'série')}>
-            <option value="filme">Filme</option>
-            <option value="série">Série</option>
-          </select>
-        </div>
-        <div>
-          <label>Ranking:</label>
-          <input type="number" value={ranking !== undefined ? ranking : ''} onChange={(e) => setRanking(Number(e.target.value))} />
-        </div>
-        <button type="submit">Criar Anime</button>
-      </form>
+      <h1>Adicionei um novo Anime</h1>
+      <Form
+        title={title}
+        description={description}
+        releaseDate={releaseDate}
+        completed={completed}
+        type={type}
+        ranking={ranking}
+        onTitleChange={onTitleChange}
+        onDescriptionChange={onDescriptionChange}
+        onReleaseDateChange={onReleaseDateChange}
+        onCompletedChange={onCompletedChange}
+        onTypeChange={onTypeChange}
+        onRankingChange={onRankingChange}
+        onSubmit={(e) => handleSubmit(e, submitAnime)}
+      />
     </div>
   );
 };
 
 export default CreateAnimePage;
+
+
+
