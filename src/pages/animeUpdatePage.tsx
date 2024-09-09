@@ -12,6 +12,7 @@ const UpdateAnimePage: React.FC = () => {
     const [releaseDate, setReleaseDate] = useState('');
     const [completed, setCompleted] = useState(false);
     const [type, setType] = useState<'filme' | 'série'>('filme');
+    const [ranking, setRanking] = useState<number | undefined>(undefined); // Novo estado para o ranking
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -28,6 +29,7 @@ const UpdateAnimePage: React.FC = () => {
           setReleaseDate(data.releaseDate);
           setCompleted(data.completed);
           setType(data.type);
+          setRanking(data.ranking); // Atualiza o ranking
         } catch (err) {
           if (err instanceof Error) {
             setError(err.message);
@@ -46,7 +48,7 @@ const UpdateAnimePage: React.FC = () => {
       event.preventDefault();
   
       if (anime) {
-        const updatedAnime: Anime = { ...anime, title, description, releaseDate, completed, type };
+        const updatedAnime: Anime = { ...anime, title, description, releaseDate, completed, type, ranking };
         try {
           await updateAnime(updatedAnime);
           navigate('/', { state: { updated: true } }); // navega p/ página de listagem e adiciona uma flag de estado ao redirecionar
@@ -108,6 +110,15 @@ const UpdateAnimePage: React.FC = () => {
               <option value="filme">Filme</option>
               <option value="série">Série</option>
             </select>
+          </div>
+          <div>
+              <label htmlFor="ranking">Ranking:</label>
+              <input
+                id="ranking"
+                type="number"
+                value={ranking ?? ''}
+                onChange={(e) => setRanking(e.target.value ? parseInt(e.target.value, 10) : undefined)}
+                />
           </div>
           <button type="submit">Atualizar Anime</button>
         </form>

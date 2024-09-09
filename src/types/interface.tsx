@@ -6,5 +6,6 @@ export interface Anime {
     completed: boolean;
     type: 'filme' | 'série';
     imageUrl?: string; 
+    ranking?: number; // Novo campo para o ranking
   }
   

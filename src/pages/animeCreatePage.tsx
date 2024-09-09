@@ -8,6 +8,7 @@ function CreateAnimePage() {
   const [releaseDate, setReleaseDate] = useState('');
   const [completed, setCompleted] = useState(false);
   const [type, setType] = useState<'filme' | 'série'>('filme'); 
+  const [ranking, setRanking] = useState<number | undefined>(undefined); // Novo estado para o ranking
 
   const navigate = useNavigate();
 
@@ -19,7 +20,8 @@ function CreateAnimePage() {
       description, 
       releaseDate, 
       completed, 
-      type 
+      type,
+      ranking, // Adicionado o ranking ao novo anime
     };
 
     try {
@@ -67,6 +69,16 @@ function CreateAnimePage() {
             <option value="filme">Filme</option>
             <option value="série">Série</option>
           </select>
+          </div>
+        <div>
+          <label>Ranking:</label>
+          <input 
+            type="number" 
+            value={ranking === undefined ? '' : ranking} 
+            onChange={(e) => setRanking(e.target.value ? parseInt(e.target.value) : undefined)} 
+            min="1" 
+            placeholder="Ranking (opcional)" 
+          />
         </div>
         <button type="submit">Criar Anime</button>
       </form>

@@ -38,11 +38,12 @@ const AnimeListPage: React.FC = () => {
     <StyledContainer>
       <h1>Os Melhores Animes</h1>
       <Button to="/create">Adicione um Anime</Button>
-      {animes.map((anime) => ( <Card 
+      {animes.map((anime) => ( 
+        <Card 
             key={anime.id} 
             anime={anime} 
             onDelete={() => handleDelete(anime.id)} 
-          />
+        />
         
       ))}
     </StyledContainer>
