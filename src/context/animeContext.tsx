@@ -40,10 +40,17 @@ interface AnimeContextType {
         setError('Erro ao deletar o anime');
       }
     };
-  
-    // Inicializa a lista de animes ao montar o componente
+
     useEffect(() => {
-      fetchAnimeList();
+      fetchAnimeList(); // Busca inicial da lista de animes
+  
+      // Polling para buscar novos animes a cada 1 segundo
+      const intervalId = setInterval(() => {
+        fetchAnimeList();
+      }, 1000); 
+  
+      // Limpa o intervalo quando o componente for desmontado
+      return () => clearInterval(intervalId);
     }, []);
   
     return (
