@@ -39,7 +39,7 @@ const AnimeListPage: React.FC = () => {
   return (
     <StyledContainer>
       <h1>Os Melhores Animes</h1>
-      <p className="descriptive"> Explore uma seleção dos melhores animes, incluindo obras-primas do Studio Ghibli, como "A Viagem de Chihiro" e "Meu Amigo Totoro", conhecidos por suas histórias encantadoras e animação impecável. Além disso, descubra clássicos dos anos 80 e 90, como "Dragon Ball", "Akira", e "Neon Genesis Evangelion", que ajudaram a moldar o gênero e a popularizar o anime globalmente.</p>
+      <p className="descriptive"> Explore uma seleção dos melhores animes, incluindo obras-primas do Studio Ghibli, como "Meu Amigo Totoro" e "O Serviço de Entregas da Kiki", conhecidos por suas histórias encantadoras e animação impecável. Além disso, descubra clássicos dos anos 80 e 90, como "Dragon Ball", "Akira", e "Neon Genesis Evangelion", que ajudaram a moldar o gênero e a popularizar o anime globalmente.</p>
       <Button to="/create">Adicione um Anime</Button>
       {animes.map((anime) => ( 
         <Card 

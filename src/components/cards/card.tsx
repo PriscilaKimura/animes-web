@@ -2,7 +2,7 @@ import React from 'react';
 import { Anime } from '../../types/interface';
 import Button from '../buttons/button';
 import DeleteButton from '../buttons/deleteButton';
-import animeImages from '../../assets/animeImages';
+import animeImages from '../../../public/assets/animeImages';
 
 interface CardProps {
     anime: Anime;
