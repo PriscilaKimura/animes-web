@@ -1,30 +1,30 @@
-# Frontend da API RESTful de Animes
+# Frontend da API de Animes
 
-## Descrição
+React + TypeScript + Vite. Lista, cria, edita e apaga animes na API em `http://localhost:8080`.
 
-O Frontend da API RESTful de Animes é uma aplicação web desenvolvida em React para gerenciar e exibir uma lista de animes. O sistema permite que os usuários visualizem, editem e excluam animes, com uma interface amigável e interativa.
+## O que mudou
 
-## Funcionalidades
+A lista buscava `GET /anime` a cada 1 segundo. Agora o `AnimeProvider` busca uma vez ao abrir e escuta Socket.IO:
 
-- **Listar Animes**: Exibe uma lista de animes com informações detalhadas e imagens.
-- **Adicionar Anime**: Permite ao usuário adicionar um novo anime com título, descrição, data de lançamento, status e tipo.
-- **Editar Anime**: Oferece a funcionalidade de atualizar os detalhes de um anime existente.
-- **Excluir Anime**: Permite a exclusão de um anime da lista.
-- **Exibição de Imagens**: Mostra imagens associadas a cada anime, com fallback para uma imagem padrão quando necessário.
+- `anime.created`
+- `anime.updated`
+- `anime.deleted`
 
-## Tecnologias
+A URL da API está em `src/config/api.ts`.
 
-- **React**: Biblioteca para a construção da interface de usuário.
-- **Styled Components**: Para estilização dos componentes.
-- **React Router**: Para o roteamento entre as páginas da aplicação.
+Na tela de adicionar, a busca consulta o catálogo da AniList (gratuito) via `GET /catalog/anime?q=`. Ao escolher um resultado, título, sinopse, data, tipo, ranking e capa já vêm preenchidos. O formulário em branco continua se a busca não achar.
 
-A aplicação estará disponível em http://localhost:3000.
+Na edição dá para enviar uma capa (`POST /anime/:id/cover`). O card usa `imageUrl` quando existe. Sem capa, mostra “Sem capa”.
 
-## Notas
-A aplicação está configurada para se conectar ao backend da API RESTful de Animes. Certifique-se de que o backend esteja em execução e acessível.
-O código ainda está em desenvolvimento e há várias melhorias planejadas, incluindo otimização de desempenho e aprimoramento da interface.
+A data de lançamento é um dia de calendário (`YYYY-MM-DD`). O card formata esse dia direto, para não deslocar a data por causa do fuso.
 
-## Contribuições
-Sinta-se à vontade para contribuir com melhorias e correções. Crie um fork do repositório, faça suas alterações e envie um pull request.
+## Como rodar
 
+Suba a API antes (veja o README de `animes-back`).
 
+```bash
+npm install
+npm run dev -- --host 127.0.0.1 --port 3000
+```
+
+http://127.0.0.1:3000

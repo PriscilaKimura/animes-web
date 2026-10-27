@@ -1,98 +1,143 @@
-import React, { useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useUpdateAnime from '../hooks/useUpdateAnime';
 import { Anime } from '../types/interface';
 import useAnimeForm from '../hooks/useFormAnime';
 import Form from '../components/form/form';
+import { API_URL } from '../config/api';
 import { AnimeContext } from '../context/animeContext';
+import { uploadCover } from '../services/uploadCover';
 
 const UpdateAnimePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Obtém o ID do anime da URL
-  const navigate = useNavigate(); // Navegação programática
-  const { updateAnime, error, setError } = useUpdateAnime(); // Hook para atualizar o anime
-  const context = useContext(AnimeContext); // Usa o contexto para refetch
-  const { refetch } = context || {}; 
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { updateAnime, error, setError } = useUpdateAnime();
+  const context = useContext(AnimeContext);
+  const { refetch } = context || {};
+  const {
+    title,
+    setTitle,
+    description,
+    setDescription,
+    releaseDate,
+    setReleaseDate,
+    completed,
+    setCompleted,
+    type,
+    setType,
+    ranking,
+    setRanking,
+    imageUrl,
+    setImageUrl,
+    handleSubmit,
+  } = useAnimeForm(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Inicializa o hook do formulário com estado inicial nulo
-  const { title, setTitle, description, setDescription, releaseDate, setReleaseDate, completed, setCompleted, type, setType, ranking, setRanking, handleSubmit } = useAnimeForm(null);
+  useEffect(() => {
+    if (location.state?.coverError) {
+      setError('O anime foi salvo, mas a capa não. Escolha a imagem de novo e salve.');
+    }
+  }, [location.state, setError]);
 
-  // Função para buscar os dados do anime
   useEffect(() => {
     const fetchAnime = async () => {
-      if (!id) return; // Garante que o ID está definido
-
+      if (!id) return;
       try {
-        const response = await fetch(`http://localhost:8080/anime/${id}`);
+        const response = await fetch(`${API_URL}/anime/${id}`);
         if (!response.ok) throw new Error('Falha ao buscar o anime');
         const fetchedAnime: Anime = await response.json();
-
-        // Atualiza os campos do formulário com os dados do anime
         setTitle(fetchedAnime.title);
         setDescription(fetchedAnime.description);
-        setReleaseDate(fetchedAnime.releaseDate);
+        setReleaseDate(fetchedAnime.releaseDate?.slice(0, 10) ?? '');
         setCompleted(fetchedAnime.completed);
         setType(fetchedAnime.type);
         setRanking(fetchedAnime.ranking);
-      } catch (error) {
-        console.error('Erro ao buscar anime:', error);
+        setImageUrl(fetchedAnime.imageUrl ?? '');
+      } catch {
         setError('Falha ao buscar os dados do anime.');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAnime(); // Busca o anime ao montar o componente
-  }, [id, setTitle, setDescription, setReleaseDate, setCompleted, setType, setRanking, setError]);
+    fetchAnime();
+  }, [id, setTitle, setDescription, setReleaseDate, setCompleted, setType, setRanking, setImageUrl, setError]);
 
-  // Função para enviar o anime atualizado
+  const onCoverSelect = (file: File | null) => {
+    setCoverPreview((current) => {
+      if (current?.startsWith('blob:')) URL.revokeObjectURL(current);
+      return file ? URL.createObjectURL(file) : null;
+    });
+    setCoverFile(file);
+  };
+
   const submitAnime = async () => {
-    if (!id) return; // Garante que o ID está definido
-
+    if (!id) return;
+    setSaving(true);
     const result = await updateAnime({
-      id: id || '', // Garante que o ID é uma string
+      id,
       title,
       description,
       releaseDate,
       completed,
       type,
       ranking,
+      imageUrl: imageUrl.trim(),
     } as Anime);
 
-    if (result) {
-      if (refetch) refetch(); // Atualiza a lista de animes após a atualização
-      navigate('/'); // Redireciona após a atualização
+    if (!result) {
+      setSaving(false);
+      return;
     }
+
+    if (coverFile) {
+      try {
+        await uploadCover(id, coverFile);
+      } catch {
+        setError('As informações foram salvas, mas a capa não. Tente a imagem de novo.');
+        setSaving(false);
+        return;
+      }
+    }
+
+    if (refetch) refetch();
+    navigate('/');
   };
 
-  // Funções para lidar com mudanças nos campos do formulário
-  const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
-  const onDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value);
-  const onReleaseDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setReleaseDate(e.target.value);
-  const onCompletedChange = () => setCompleted(!completed);
-  const onTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value as 'filme' | 'série');
-  const onRankingChange = (e: React.ChangeEvent<HTMLInputElement>) => setRanking(Number(e.target.value));
+  if (loading) {
+    return <p>Carregando o anime...</p>;
+  }
 
   return (
-    <div>
-      <h1>Edite o seu Anime</h1>
-      <Form
-        title={title}
-        description={description}
-        releaseDate={releaseDate}
-        completed={completed}
-        type={type}
-        ranking={ranking}
-        onTitleChange={onTitleChange}
-        onDescriptionChange={onDescriptionChange}
-        onReleaseDateChange={onReleaseDateChange}
-        onCompletedChange={onCompletedChange}
-        onTypeChange={onTypeChange}
-        onRankingChange={onRankingChange}
-        onSubmit={(e) => handleSubmit(e, submitAnime)}
-        error={error ?? undefined} // Garante que 'error' é 'undefined' quando nulo
-      />
-    </div>
+    <Form
+      heading="Editar anime"
+      submitLabel="Salvar alterações"
+      saving={saving}
+      title={title}
+      description={description}
+      releaseDate={releaseDate}
+      completed={completed}
+      type={type}
+      ranking={ranking}
+      coverPreview={coverPreview || (imageUrl.trim().startsWith('http') ? imageUrl.trim() : null)}
+      coverUrl={imageUrl}
+      canClearCover={Boolean(coverFile)}
+      onTitleChange={(e) => setTitle(e.target.value)}
+      onDescriptionChange={(e) => setDescription(e.target.value)}
+      onReleaseDateChange={(e) => setReleaseDate(e.target.value)}
+      onCompletedChange={() => setCompleted(!completed)}
+      onTypeChange={(e) => setType(e.target.value as 'filme' | 'série')}
+      onRankingChange={(e) => setRanking(e.target.value === '' ? undefined : Number(e.target.value))}
+      onCoverSelect={onCoverSelect}
+      onCoverUrlChange={setImageUrl}
+      onSubmit={(e) => handleSubmit(e, submitAnime)}
+      error={error ?? undefined}
+    />
   );
 };
 
 export default UpdateAnimePage;
-
-

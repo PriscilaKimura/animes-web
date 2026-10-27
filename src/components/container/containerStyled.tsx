@@ -38,11 +38,11 @@ const StyledContainer = styled.div`
     color: #333; 
   }
 
-  button {
-    grid-column: 1 / -1; 
-    justify-self: center; 
-    margin-top: 20px; 
-    width: 120px; 
+  > button {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 20px;
+    width: fit-content;
   }
 `;
 

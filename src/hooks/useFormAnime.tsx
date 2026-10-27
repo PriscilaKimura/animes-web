@@ -8,12 +8,20 @@ import { Anime } from '../types/interface';
     const [completed, setCompleted] = useState(initialState?.completed || false);
     const [type, setType] = useState<'filme' | 'série'>(initialState?.type || 'filme');
     const [ranking, setRanking] = useState<number | undefined>(initialState?.ranking);
+    const [imageUrl, setImageUrl] = useState(initialState?.imageUrl || '');
   
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>, submitFn: (anime: Partial<Anime>) => Promise<void>) => {
       event.preventDefault();
 
-       // objeto anime com as propriedades fornecidas
-      const anime: Partial<Anime> = { title, description, releaseDate, completed, type, ranking };
+      const anime: Partial<Anime> = {
+        title,
+        description,
+        releaseDate,
+        completed,
+        type,
+        ranking,
+        imageUrl: imageUrl.trim() || undefined,
+      };
       await submitFn(anime);
     };
   
@@ -30,6 +38,8 @@ import { Anime } from '../types/interface';
       setType,
       ranking,
       setRanking,
+      imageUrl,
+      setImageUrl,
       handleSubmit
     };
   };

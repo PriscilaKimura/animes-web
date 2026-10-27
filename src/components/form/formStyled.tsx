@@ -1,4 +1,17 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+export const BackLink = styled(Link)`
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #4a1d7e;
+  font-family: 'Karla', sans-serif;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export const FormContainer = styled.div`
   max-width: 600px;
@@ -85,4 +98,59 @@ export const FormCheckboxLabel = styled.label`
   align-items: center; 
   gap: 10px; 
   margin-top: 5px;
+`;
+
+export const CoverBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+export const CoverPreview = styled.img`
+  width: 140px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+`;
+
+export const CoverEmpty = styled.div`
+  width: 140px;
+  height: 190px;
+  border: 1px dashed #9b2929;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9b2929;
+  font-family: 'Karla', sans-serif;
+`;
+
+export const CoverActions = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const CoverButton = styled.button`
+  padding: 8px 12px;
+  border: 1px solid #4a1d7e;
+  border-radius: 4px;
+  background: #fff;
+  color: #4a1d7e;
+  cursor: pointer;
+`;
+
+export const CoverHint = styled.p`
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;
+  text-align: left;
+`;
+
+export const FieldHint = styled.p`
+  margin: 6px 0 0;
+  color: #555;
+  font-size: 0.85rem;
+  text-align: left;
 `;

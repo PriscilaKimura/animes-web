@@ -1,5 +1,6 @@
 // Hook personalizado chamado useFetchAnime para encapsular a lógica de busca de anime
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config/api';
 import { Anime } from '../types/interface'; 
 
 const useFetchAnime = () => {
@@ -11,7 +12,7 @@ const useFetchAnime = () => {
   const fetchAnimes = async () => {
     setLoading(true); // Inicia o estado de carregamento
     try {
-      const response = await fetch('http://localhost:8080/anime');
+      const response = await fetch(`${API_URL}/anime`);
       if (!response.ok) {
         throw new Error('Erro ao buscar os animes. Tente novamente.');
       }

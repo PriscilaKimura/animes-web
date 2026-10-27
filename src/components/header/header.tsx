@@ -4,10 +4,10 @@ import StyledHeader from './headerStyled';
 
 const Header: React.FC = () => {
   return (
-    <StyledHeader>
+    <StyledHeader translate="no">
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/">Início</Link></li>
           <li><Link to="/create">Adicionar</Link></li>
         </ul>
       </nav>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../config/api';
 import { Anime } from '../types/interface';
 
 const useUpdateAnime = () => {
@@ -6,7 +7,7 @@ const useUpdateAnime = () => {
 
   const updateAnime = async (updatedAnime: Anime): Promise<Anime | null> => {
     try {
-      const response = await fetch(`http://localhost:8080/anime/${updatedAnime.id}`, {
+      const response = await fetch(`${API_URL}/anime/${updatedAnime.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

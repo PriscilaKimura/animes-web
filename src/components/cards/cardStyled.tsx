@@ -12,9 +12,10 @@ const StyledCard = styled.div`
   align-items: center; 
 
   img {
-    border-radius: 8px; 
-    max-width: 100%; 
-    height: auto; 
+    border-radius: 8px;
+    width: 200px;
+    height: 280px;
+    object-fit: cover;
   }
 
   h2 {
